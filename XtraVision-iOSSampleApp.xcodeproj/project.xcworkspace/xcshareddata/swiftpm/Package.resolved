@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "toast-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scalessec/Toast-Swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "0c9493eeacb102cc614da385cfaaf475379f4ab4"
+      }
+    },
+    {
+      "identity" : "xtravision-swift-package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/xtravision-ai/xtravision-swift-package.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ac0b35b99cc1ef920bcbc44e07614196ddd04800"
+      }
+    }
+  ],
+  "version" : 2
+}

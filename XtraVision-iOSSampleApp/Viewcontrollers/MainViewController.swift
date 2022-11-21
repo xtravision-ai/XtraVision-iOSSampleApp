@@ -7,9 +7,12 @@
 
 import UIKit
 
+var isSkeletonEnable = true
+
 class MainViewController: UIViewController {
 
     //MARK: Outlets
+    @IBOutlet weak var btnSkeleton: UISwitch!
     @IBOutlet private weak var tblAssessmentList: UITableView!
     
     //MARK: Private variables
@@ -21,6 +24,16 @@ class MainViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func onSkeletonOnOff(_ sender: UISwitch) {
+//        sender.isOn = !sender.isOn
+        if sender.isOn {
+            isSkeletonEnable = true
+        } else {
+            isSkeletonEnable = false
+        }
+    }
+    
 }
 
 extension MainViewController : UITableViewDataSource, UITableViewDelegate {

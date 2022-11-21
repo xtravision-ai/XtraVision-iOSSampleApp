@@ -4,10 +4,16 @@
 //
 //  Created by XTRA on 25/10/22.
 //
+//
+//  ExerciseVC.swift
+//  DemoApp
+//
+//  Created by XTRA on 25/10/22.
+//
 
 import UIKit
 import XtraVisionAI
-import Toast
+//import Toast
 import AVKit
 
 class ExerciseVC : UIViewController, ReusableProtocol {
@@ -24,44 +30,47 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     private var fullMessage = ""
     private lazy var captureSession = AVCaptureSession()
     private lazy var sessionQueue = DispatchQueue(label: Constant.sessionQueueLabel)
-    
-    private lazy var previewOverlayView: UIImageView = {
-        precondition(isViewLoaded)
-        let previewOverlayView = UIImageView(frame: .zero)
-        previewOverlayView.contentMode = UIView.ContentMode.scaleAspectFill
-        previewOverlayView.translatesAutoresizingMaskIntoConstraints = false
-        return previewOverlayView
-    }()
+    private var previewLayer: AVCaptureVideoPreviewLayer!
     
     //MARK: Outlets
     @IBOutlet weak var btnSkip: UIButton!
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var vwResponse: UIView!
-    @IBOutlet weak var lblResponse: UILabel!
+    @IBOutlet weak var lblResponse: UITextView!
     
     //MARK: View Life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         initialiseController()
-        setUpPreviewOverlayView()
         setUpCaptureSessionOutput()
         setUpCaptureSessionInput()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-      super.viewDidAppear(animated)
-      startSession()
+        super.viewDidAppear(animated)
+        startSession()
+        connectSocket()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
       super.viewDidDisappear(animated)
-
       stopSession()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        previewLayer.frame = cameraView.frame
+        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
+            previewLayer.connection?.videoOrientation = .landscapeLeft
+        } else {
+            previewLayer.connection?.videoOrientation = .portrait
+        }
     }
     
     //MARK: UIButton action methods
     @IBAction func btnClickOnSkip(_ sender: UIButton) {
+        btnSkip.isHidden = true
         vwResponse.isHidden = false
         isPreJoin = false
         xtraVisionMgr.disconnectSocket()
@@ -78,28 +87,18 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         UIApplication.shared.isIdleTimerDisabled = true
         vwResponse.isHidden = true
         xtraVisionMgr.delegate = self
-        connectSocket()
+//        connectSocket()
     }
     
     func connectSocket() {
-        let assessmentConfig = XtraVisionAssessmentConfig(10, grace_time_threshold: 5)
+        let assessmentConfig = XtraVisionAssessmentConfig(5, grace_time_threshold: 5)
         let connectionData = XtraVisionConnectionData("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU1NTVkNS0wNmFhLTExZWQtOGJkYy0xMmZhYjRmZmFiZWQiLCJhcHBJZCI6IjY5YTdmMmU2LTA2YWEtMTFlZC04YmRjLTEyZmFiNGZmYWJlZCIsIm9yZ0lkIjoiNmQ5MWZlN2YtMDZhOS0xMWVkLThiZGMtMTJmYWI0ZmZhYmVkIiwiaWF0IjoxNjYwMTA3MjI0LCJleHAiOjE2OTE2NjQ4MjR9._i4MJbwPznHzxoStcRAcK7N7k_xGdUjvKwmHXv1zixM", assessmentName: assessment, assessmentConfig: assessmentConfig)
 
         let requestData = XtraVisionRequestData(isPreJoin)
-        let libData = XtraVisionLibData(false)
+        let skeletonConfig = XtraVisionSkeletonConfig(2.0, dotRadius: 4.0, lineColor: UIColor.red, dotColor: UIColor.blue)
+        let libData = XtraVisionLibData(isSkeletonEnable, cameraView: cameraView, previewLayer: previewLayer, skeletonConfig: skeletonConfig)
         xtraVisionMgr.configureData(connectionData, requestData: requestData, libData: libData)
     }
-    
-    private func setUpPreviewOverlayView() {
-        cameraView.addSubview(previewOverlayView)
-        NSLayoutConstraint.activate([
-          previewOverlayView.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
-          previewOverlayView.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
-          previewOverlayView.leadingAnchor.constraint(equalTo: cameraView.leadingAnchor),
-          previewOverlayView.trailingAnchor.constraint(equalTo: cameraView.trailingAnchor),
-
-        ])
-      }
     
     private func setUpCaptureSessionOutput() {
         weak var weakSelf = self
@@ -206,15 +205,7 @@ extension ExerciseVC: AVCaptureVideoDataOutputSampleBufferDelegate {
         didOutput sampleBuffer: CMSampleBuffer,
         from connection: AVCaptureConnection
     ) {
-        guard let uiImage = imageFromSampleBuffer(sampleBuffer: sampleBuffer) else { return }
-        
-        //As we are getting landscape image in portrait mode we are rotating it
-        guard let newuiImage = uiImage.rotate(radians: .pi / 2)?.withHorizontallyFlippedOrientation() else {return}
-        
-        DispatchQueue.main.async {
-            self.previewOverlayView.image = newuiImage
-        }
-        xtraVisionMgr.detectPose(image: newuiImage)
+        xtraVisionMgr.detectPose(sampleBuffer)
     }
     
     private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> UIImage? {
@@ -227,21 +218,24 @@ extension ExerciseVC: AVCaptureVideoDataOutputSampleBufferDelegate {
 
 //MARK: XtraVisionAI Delegate method
 extension ExerciseVC : XtraVisionAIDelegate {
+    
     func onMessageReceived(_ message: String) {
-//        print("message: \(message)")
+        print("message: \(message)")
         if let response = message.toJSON() as? [String : Any] {
             if isPreJoin {
                 if let isPassed = response["isPassed"] as? Bool, isPassed == true {
                     vwResponse.isHidden = false
+                    btnSkip.isHidden = true
                     isPreJoin = false
                     xtraVisionMgr.disconnectSocket()
                     connectSocket()
                 } else {
-                    self.view.makeToast(response["message"] as? String, duration: 2.0, position: .bottom)
+//                    self.view.makeToast(response["message"] as? String, duration: 2.0, position: .bottom)
                 }
             } else {
 //                timeLeftLabel.text = "\(response["time_left"] as? Int ?? 999)"
-                lblResponse.text = message
+                let msg = message + "\n\n" + lblResponse.text
+                lblResponse.text = msg
             }
 //
         }
@@ -251,32 +245,5 @@ extension ExerciseVC : XtraVisionAIDelegate {
 private enum Constant {
   static let videoDataOutputQueueLabel = "com.google.mlkit.visiondetector.VideoDataOutputQueue"
   static let sessionQueueLabel = "com.google.mlkit.visiondetector.SessionQueue"
-  static let smallDotRadius: CGFloat = 4.0
-  static let lineWidth: CGFloat = 3.0
-}
-
-extension UIImage {
-    
-    func rotate(radians: Float) -> UIImage? {
-        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
-        // Trim off the extremely small float value to prevent core graphics from rounding it up
-        newSize.width = floor(newSize.width)
-        newSize.height = floor(newSize.height)
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, false, self.scale)
-        let context = UIGraphicsGetCurrentContext()!
-        
-        // Move origin to middle
-        context.translateBy(x: newSize.width/2, y: newSize.height/2)
-        // Rotate around middle
-        context.rotate(by: CGFloat(radians))
-        // Draw the image at its center
-        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
-    }
 }
 

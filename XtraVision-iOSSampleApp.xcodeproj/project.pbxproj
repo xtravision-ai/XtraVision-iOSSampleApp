@@ -17,8 +17,8 @@
 		31ADDF27290BA9C600E9F7F8 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADDF26290BA9C600E9F7F8 /* StringExt.swift */; };
 		31ADDF2A290BA9D900E9F7F8 /* ExerciseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADDF28290BA9D900E9F7F8 /* ExerciseVC.swift */; };
 		31ADDF2B290BA9D900E9F7F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADDF29290BA9D900E9F7F8 /* MainViewController.swift */; };
-		31ADDF2F290BAB0800E9F7F8 /* XtraVisionAI in Frameworks */ = {isa = PBXBuildFile; productRef = 31ADDF2E290BAB0800E9F7F8 /* XtraVisionAI */; };
 		31ADDF32290BAB1900E9F7F8 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 31ADDF31290BAB1900E9F7F8 /* Toast */; };
+		31EB4C29292B43E500B005E9 /* XtraVisionAI in Frameworks */ = {isa = PBXBuildFile; productRef = 31EB4C28292B43E500B005E9 /* XtraVisionAI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31ADDF32290BAB1900E9F7F8 /* Toast in Frameworks */,
-				31ADDF2F290BAB0800E9F7F8 /* XtraVisionAI in Frameworks */,
+				31EB4C29292B43E500B005E9 /* XtraVisionAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,8 +132,8 @@
 			);
 			name = "XtraVision-iOSSampleApp";
 			packageProductDependencies = (
-				31ADDF2E290BAB0800E9F7F8 /* XtraVisionAI */,
 				31ADDF31290BAB1900E9F7F8 /* Toast */,
+				31EB4C28292B43E500B005E9 /* XtraVisionAI */,
 			);
 			productName = "XtraVision-iOSSampleApp";
 			productReference = 31ADDF02290BA88800E9F7F8 /* XtraVision-iOSSampleApp.app */;
@@ -164,8 +164,8 @@
 			);
 			mainGroup = 31ADDEF9290BA88800E9F7F8;
 			packageReferences = (
-				31ADDF2D290BAB0800E9F7F8 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */,
 				31ADDF30290BAB1900E9F7F8 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				31EB4C27292B43E500B005E9 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */,
 			);
 			productRefGroup = 31ADDF03290BA88800E9F7F8 /* Products */;
 			projectDirPath = "";
@@ -346,7 +346,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = S3V97MLHVW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XtraVision-iOSSampleApp/Info.plist";
@@ -362,8 +362,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "XTRA.XtraVision-iOSSampleApp";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xtravision.ios.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -377,7 +377,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = S3V97MLHVW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XtraVision-iOSSampleApp/Info.plist";
@@ -393,8 +393,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "XTRA.XtraVision-iOSSampleApp";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xtravision.ios.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -426,14 +426,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		31ADDF2D290BAB0800E9F7F8 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/xtravision-ai/xtravision-swift-package.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		31ADDF30290BAB1900E9F7F8 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scalessec/Toast-Swift";
@@ -442,18 +434,26 @@
 				kind = branch;
 			};
 		};
+		31EB4C27292B43E500B005E9 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/xtravision-ai/xtravision-swift-package.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		31ADDF2E290BAB0800E9F7F8 /* XtraVisionAI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 31ADDF2D290BAB0800E9F7F8 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */;
-			productName = XtraVisionAI;
-		};
 		31ADDF31290BAB1900E9F7F8 /* Toast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 31ADDF30290BAB1900E9F7F8 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
 			productName = Toast;
+		};
+		31EB4C28292B43E500B005E9 /* XtraVisionAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31EB4C27292B43E500B005E9 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */;
+			productName = XtraVisionAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

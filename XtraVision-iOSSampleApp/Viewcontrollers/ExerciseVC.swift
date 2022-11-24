@@ -140,7 +140,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
                 print("Failed to get capture device for camera position: \(cameraPosition)")
                 return
             }
-            
+            device.set(frameRate: 10)
             do {
                 strongSelf.captureSession.beginConfiguration()
                 let currentInputs = strongSelf.captureSession.inputs
@@ -207,13 +207,6 @@ extension ExerciseVC: AVCaptureVideoDataOutputSampleBufferDelegate {
     ) {
         xtraVisionMgr.detectPose(sampleBuffer)
     }
-    
-    private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> UIImage? {
-        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return nil }
-        let ciImage = CIImage(cvPixelBuffer: imageBuffer)
-        guard let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) else { return nil }
-        return UIImage(cgImage: cgImage)
-    }
 }
 
 //MARK: XtraVisionAI Delegate method
@@ -246,4 +239,3 @@ private enum Constant {
   static let videoDataOutputQueueLabel = "com.google.mlkit.visiondetector.VideoDataOutputQueue"
   static let sessionQueueLabel = "com.google.mlkit.visiondetector.SessionQueue"
 }
-

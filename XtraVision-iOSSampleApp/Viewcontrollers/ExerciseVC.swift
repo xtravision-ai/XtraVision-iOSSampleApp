@@ -140,7 +140,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
                 print("Failed to get capture device for camera position: \(cameraPosition)")
                 return
             }
-            device.set(frameRate: 10)
+//            device.set(frameRate: 10)
             do {
                 strongSelf.captureSession.beginConfiguration()
                 let currentInputs = strongSelf.captureSession.inputs

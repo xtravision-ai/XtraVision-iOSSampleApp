@@ -19,7 +19,6 @@
 		31ADDF2B290BA9D900E9F7F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADDF29290BA9D900E9F7F8 /* MainViewController.swift */; };
 		31ADDF32290BAB1900E9F7F8 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 31ADDF31290BAB1900E9F7F8 /* Toast */; };
 		31EB4C29292B43E500B005E9 /* XtraVisionAI in Frameworks */ = {isa = PBXBuildFile; productRef = 31EB4C28292B43E500B005E9 /* XtraVisionAI */; };
-		31EB4C3A292F96CF00B005E9 /* AVCaptureDeviceExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB4C39292F96CF00B005E9 /* AVCaptureDeviceExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +34,6 @@
 		31ADDF26290BA9C600E9F7F8 /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		31ADDF28290BA9D900E9F7F8 /* ExerciseVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseVC.swift; sourceTree = "<group>"; };
 		31ADDF29290BA9D900E9F7F8 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		31EB4C39292F96CF00B005E9 /* AVCaptureDeviceExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureDeviceExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +102,6 @@
 			children = (
 				31ADDF26290BA9C600E9F7F8 /* StringExt.swift */,
 				31ADDF24290BA9B100E9F7F8 /* Protocol */,
-				31EB4C39292F96CF00B005E9 /* AVCaptureDeviceExt.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -204,7 +201,6 @@
 				31ADDF27290BA9C600E9F7F8 /* StringExt.swift in Sources */,
 				31ADDF08290BA88800E9F7F8 /* SceneDelegate.swift in Sources */,
 				31ADDF2B290BA9D900E9F7F8 /* MainViewController.swift in Sources */,
-				31EB4C3A292F96CF00B005E9 /* AVCaptureDeviceExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

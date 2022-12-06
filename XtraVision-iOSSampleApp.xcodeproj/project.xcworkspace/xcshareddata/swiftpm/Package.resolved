@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/xtravision-ai/xtravision-swift-package.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "584b5a10d84c89187388c874123e385e933f4660"
+        "branch" : "staging",
+        "revision" : "eee168abde8a908493a6d1451417bb50a57c2765"
       }
     }
   ],

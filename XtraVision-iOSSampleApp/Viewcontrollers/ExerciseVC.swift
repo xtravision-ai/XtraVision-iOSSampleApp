@@ -28,9 +28,6 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     private var xtraVisionMgr = XtraVisionAIManager.shared
     private var isPreJoin = true
     private var fullMessage = ""
-    private lazy var captureSession = AVCaptureSession()
-    private lazy var sessionQueue = DispatchQueue(label: Constant.sessionQueueLabel)
-    private var previewLayer: AVCaptureVideoPreviewLayer!
     
     //MARK: Outlets
     @IBOutlet weak var btnSkip: UIButton!
@@ -42,16 +39,12 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         initialiseController()
-        setUpCaptureSessionOutput()
-        setUpCaptureSessionInput()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        startSession()
-        connectSocket()
+        connectSession()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -59,22 +52,13 @@ class ExerciseVC : UIViewController, ReusableProtocol {
       stopSession()
     }
     
-    override func viewDidLayoutSubviews() {
-        previewLayer.frame = cameraView.frame
-        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
-            previewLayer.connection?.videoOrientation = .landscapeLeft
-        } else {
-            previewLayer.connection?.videoOrientation = .portrait
-        }
-    }
-    
     //MARK: UIButton action methods
     @IBAction func btnClickOnSkip(_ sender: UIButton) {
         btnSkip.isHidden = true
         vwResponse.isHidden = false
         isPreJoin = false
-        xtraVisionMgr.disconnectSocket()
-        connectSocket()
+        xtraVisionMgr.disconnectSession()
+        connectSession()
     }
     
     @IBAction func btnClickOnCancel(_ sender: UIButton) {
@@ -90,121 +74,19 @@ class ExerciseVC : UIViewController, ReusableProtocol {
 //        connectSocket()
     }
     
-    func connectSocket() {
+    func connectSession() {
         let assessmentConfig = XtraVisionAssessmentConfig(5, grace_time_threshold: 5)
         let connectionData = XtraVisionConnectionData("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU1NTVkNS0wNmFhLTExZWQtOGJkYy0xMmZhYjRmZmFiZWQiLCJhcHBJZCI6IjY5YTdmMmU2LTA2YWEtMTFlZC04YmRjLTEyZmFiNGZmYWJlZCIsIm9yZ0lkIjoiNmQ5MWZlN2YtMDZhOS0xMWVkLThiZGMtMTJmYWI0ZmZhYmVkIiwiaWF0IjoxNjYwMTA3MjI0LCJleHAiOjE2OTE2NjQ4MjR9._i4MJbwPznHzxoStcRAcK7N7k_xGdUjvKwmHXv1zixM", assessmentName: assessment, assessmentConfig: assessmentConfig)
 
         let requestData = XtraVisionRequestData(isPreJoin)
         let skeletonConfig = XtraVisionSkeletonConfig(2.0, dotRadius: 4.0, lineColor: UIColor.red, dotColor: UIColor.blue)
-        let libData = XtraVisionLibData(isSkeletonEnable, cameraView: cameraView, previewLayer: previewLayer, skeletonConfig: skeletonConfig)
+        let libData = XtraVisionLibData(isSkeletonEnable, cameraView: cameraView, skeletonConfig: skeletonConfig)
         xtraVisionMgr.configureData(connectionData, requestData: requestData, libData: libData)
     }
     
-    private func setUpCaptureSessionOutput() {
-        weak var weakSelf = self
-        sessionQueue.async {
-          guard let strongSelf = weakSelf else {
-            print("Self is nil!")
-            return
-          }
-          strongSelf.captureSession.beginConfiguration()
-          // When performing latency tests to determine ideal capture settings,
-          // run the app in 'release' mode to get accurate performance metrics
-          strongSelf.captureSession.sessionPreset = AVCaptureSession.Preset.medium
-
-          let output = AVCaptureVideoDataOutput()
-          output.videoSettings = [
-            (kCVPixelBufferPixelFormatTypeKey as String): kCVPixelFormatType_32BGRA
-          ]
-          output.alwaysDiscardsLateVideoFrames = true
-          let outputQueue = DispatchQueue(label: Constant.videoDataOutputQueueLabel)
-          output.setSampleBufferDelegate(strongSelf, queue: outputQueue)
-          guard strongSelf.captureSession.canAddOutput(output) else {
-            print("Failed to add capture session output.")
-            return
-          }
-          strongSelf.captureSession.addOutput(output)
-          strongSelf.captureSession.commitConfiguration()
-        }
-      }
-    
-    private func setUpCaptureSessionInput() {
-        weak var weakSelf = self
-        sessionQueue.async {
-            guard let strongSelf = weakSelf else {
-                print("Self is nil!")
-                return
-            }
-            let cameraPosition: AVCaptureDevice.Position = .front
-            guard let device = strongSelf.captureDevice(forPosition: cameraPosition) else {
-                print("Failed to get capture device for camera position: \(cameraPosition)")
-                return
-            }
-            do {
-                strongSelf.captureSession.beginConfiguration()
-                let currentInputs = strongSelf.captureSession.inputs
-                for input in currentInputs {
-                    strongSelf.captureSession.removeInput(input)
-                }
-                
-                let input = try AVCaptureDeviceInput(device: device)
-                guard strongSelf.captureSession.canAddInput(input) else {
-                    print("Failed to add capture session input.")
-                    return
-                }
-                strongSelf.captureSession.addInput(input)
-                strongSelf.captureSession.commitConfiguration()
-            } catch {
-                print("Failed to create capture device input: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    
-    private func captureDevice(forPosition position: AVCaptureDevice.Position) -> AVCaptureDevice? {
-        let discoverySession = AVCaptureDevice.DiscoverySession(
-            deviceTypes: [.builtInWideAngleCamera],
-            mediaType: .video,
-            position: .front
-        )
-        return discoverySession.devices.first { $0.position == position }
-    }
-    
-    private func startSession() {
-        weak var weakSelf = self
-        sessionQueue.async {
-            guard let strongSelf = weakSelf else {
-                print("Self is nil!")
-                return
-            }
-            strongSelf.captureSession.startRunning()
-        }
-    }
-    
-    private func stopSession() {
+    func stopSession() {
+        xtraVisionMgr.disconnectSession()
         UIApplication.shared.isIdleTimerDisabled = false
-        weak var weakSelf = self
-        sessionQueue.async {
-            guard let strongSelf = weakSelf else {
-                print("Self is nil!")
-                return
-            }
-            strongSelf.captureSession.stopRunning()
-            strongSelf.xtraVisionMgr.disconnectSocket()
-        }
-    }
-}
-
-// MARK: AVCaptureVideoDataOutputSampleBufferDelegate
-
-extension ExerciseVC: AVCaptureVideoDataOutputSampleBufferDelegate {
-    
-    func captureOutput(
-        _ output: AVCaptureOutput,
-        didOutput sampleBuffer: CMSampleBuffer,
-        from connection: AVCaptureConnection
-    ) {
-        xtraVisionMgr.detectPose(sampleBuffer)
     }
 }
 
@@ -219,8 +101,8 @@ extension ExerciseVC : XtraVisionAIDelegate {
                     vwResponse.isHidden = false
                     btnSkip.isHidden = true
                     isPreJoin = false
-                    xtraVisionMgr.disconnectSocket()
-                    connectSocket()
+                    xtraVisionMgr.disconnectSession()
+                    connectSession()
                 } else {
 //                    self.view.makeToast(response["message"] as? String, duration: 2.0, position: .bottom)
                 }

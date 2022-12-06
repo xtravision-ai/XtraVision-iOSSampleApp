@@ -115,8 +115,3 @@ extension ExerciseVC : XtraVisionAIDelegate {
         }
     }
 }
-
-private enum Constant {
-  static let videoDataOutputQueueLabel = "com.google.mlkit.visiondetector.VideoDataOutputQueue"
-  static let sessionQueueLabel = "com.google.mlkit.visiondetector.SessionQueue"
-}

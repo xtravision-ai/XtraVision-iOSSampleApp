@@ -76,12 +76,13 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     
     func connectSession() {
         let assessmentConfig = XtraVisionAssessmentConfig(5, grace_time_threshold: 5)
-        let connectionData = XtraVisionConnectionData("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU1NTVkNS0wNmFhLTExZWQtOGJkYy0xMmZhYjRmZmFiZWQiLCJhcHBJZCI6IjY5YTdmMmU2LTA2YWEtMTFlZC04YmRjLTEyZmFiNGZmYWJlZCIsIm9yZ0lkIjoiNmQ5MWZlN2YtMDZhOS0xMWVkLThiZGMtMTJmYWI0ZmZhYmVkIiwiaWF0IjoxNjYwMTA3MjI0LCJleHAiOjE2OTE2NjQ4MjR9._i4MJbwPznHzxoStcRAcK7N7k_xGdUjvKwmHXv1zixM", assessmentName: assessment, assessmentConfig: assessmentConfig)
+        let connectionData = XtraVisionConnectionData("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTliZDI2YS0zYWMzLTQ4MzYtYWQ0NS04NDU4MDE1ZWUzODIiLCJhcHBJZCI6ImFlMjkyMGUyLTQ5MmUtMTFlZC05NzhkLTAyNzNkZDFhMzQ2YyIsIm9yZ0lkIjoiYWI0MzFjMGMtNDkyZS0xMWVkLTk3OGQtMDI3M2RkMWEzNDZjIiwiaWF0IjoxNjY4NTExODQ4LCJleHAiOjE3MDAwNjk0NDh9.BORFCdCr904YazJaFJmXAGjeg7Jpf9W9cxe4TAcc-Nw", assessmentName: assessment, assessmentConfig: assessmentConfig)
 
         let requestData = XtraVisionRequestData(isPreJoin)
         let skeletonConfig = XtraVisionSkeletonConfig(2.0, dotRadius: 4.0, lineColor: UIColor.red, dotColor: UIColor.blue)
         let libData = XtraVisionLibData(isSkeletonEnable, cameraView: cameraView, skeletonConfig: skeletonConfig)
         xtraVisionMgr.configureData(connectionData, requestData: requestData, libData: libData)
+//        stopSession()
     }
     
     func stopSession() {
@@ -92,6 +93,18 @@ class ExerciseVC : UIViewController, ReusableProtocol {
 
 //MARK: XtraVisionAI Delegate method
 extension ExerciseVC : XtraVisionAIDelegate {
+    func onConnectSuccess() {
+        print("Connection done successfully")
+    }
+    
+    func onConnectFailed(_ string: String) {
+        print("Connection failed: ", string)
+    }
+    
+    func onConnectClose() {
+        print("Connection closed")
+    }
+    
     
     func onMessageReceived(_ message: String) {
         print("message: \(message)")

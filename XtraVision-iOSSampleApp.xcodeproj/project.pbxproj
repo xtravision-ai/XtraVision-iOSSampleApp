@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		319A07BC29A5EDE700E5BA73 /* XTRAAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A07BB29A5EDE700E5BA73 /* XTRAAudioPlayer.swift */; };
+		319A07D129A634C800E5BA73 /* sound_good_trigger.wav in Resources */ = {isa = PBXBuildFile; fileRef = 319A07D029A634C800E5BA73 /* sound_good_trigger.wav */; };
 		31ADDF06290BA88800E9F7F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADDF05290BA88800E9F7F8 /* AppDelegate.swift */; };
 		31ADDF08290BA88800E9F7F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADDF07290BA88800E9F7F8 /* SceneDelegate.swift */; };
 		31ADDF0D290BA88800E9F7F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31ADDF0B290BA88800E9F7F8 /* Main.storyboard */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		319A07BB29A5EDE700E5BA73 /* XTRAAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XTRAAudioPlayer.swift; sourceTree = "<group>"; };
+		319A07D029A634C800E5BA73 /* sound_good_trigger.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_good_trigger.wav; sourceTree = "<group>"; };
 		31ADDF02290BA88800E9F7F8 /* XtraVision-iOSSampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XtraVision-iOSSampleApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31ADDF05290BA88800E9F7F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31ADDF07290BA88800E9F7F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +88,8 @@
 		31ADDF21290BA99C00E9F7F8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				319A07D029A634C800E5BA73 /* sound_good_trigger.wav */,
+				319A07BB29A5EDE700E5BA73 /* XTRAAudioPlayer.swift */,
 				31ADDF1F290BA99300E9F7F8 /* CommonFunctions.swift */,
 			);
 			path = Helpers;
@@ -183,6 +189,7 @@
 			files = (
 				31ADDF12290BA88A00E9F7F8 /* LaunchScreen.storyboard in Resources */,
 				31ADDF0F290BA88A00E9F7F8 /* Assets.xcassets in Resources */,
+				319A07D129A634C800E5BA73 /* sound_good_trigger.wav in Resources */,
 				31ADDF0D290BA88800E9F7F8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -200,6 +207,7 @@
 				31ADDF20290BA99300E9F7F8 /* CommonFunctions.swift in Sources */,
 				31ADDF27290BA9C600E9F7F8 /* StringExt.swift in Sources */,
 				31ADDF08290BA88800E9F7F8 /* SceneDelegate.swift in Sources */,
+				319A07BC29A5EDE700E5BA73 /* XTRAAudioPlayer.swift in Sources */,
 				31ADDF2B290BA9D900E9F7F8 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

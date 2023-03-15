@@ -25,7 +25,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     //MARK:- Variable declaration
     var assessment : String = ""
     private var xtraVisionMgr = XtraVisionAIManager.shared
-    private let authToken = "_AUTH_TOKEN_"
+    private let authToken = "_AUTH_TOKEN_" //Add auth token you received
     private var isPreJoin = true
     private var fullMessage = ""
     private var repsCounterView : RepetitionCounter!

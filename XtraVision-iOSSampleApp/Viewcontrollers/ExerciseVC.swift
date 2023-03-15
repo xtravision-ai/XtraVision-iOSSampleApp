@@ -57,14 +57,14 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     //MARK: UIButton action methods
     @IBAction func btnClickOnSkip(_ sender: UIButton) {
         btnSkip.isHidden = true
-        if assessment == "HALF_SQUAT" {
-            vwrepsCounter.isHidden = false
-            vwResponse.isHidden = true
-            setRepsCounter()
-        } else {
+//        if assessment == "HALF_SQUAT" {
+//            vwrepsCounter.isHidden = false
+//            vwResponse.isHidden = true
+//            setRepsCounter()
+//        } else {
             vwResponse.isHidden = false
             vwrepsCounter.isHidden = true
-        }
+//        }
         isPreJoin = false
         xtraVisionMgr.disconnectSession()
         connectSession()
@@ -79,9 +79,9 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     func initialiseController() {
         UIApplication.shared.isIdleTimerDisabled = true
         vwResponse.isHidden = true
-        if assessment == "HALF_SQUAT" {
-            vwrepsCounter.isHidden = true
-        }
+//        if assessment == "HALF_SQUAT" {
+//            vwrepsCounter.isHidden = true
+//        }
         xtraVisionMgr.delegate = self
     }
     
@@ -128,14 +128,14 @@ extension ExerciseVC : XtraVisionAIDelegate {
         if let response = message.toJSON() as? [String : Any] {
             if isPreJoin {
                 if let isPassed = response["isPassed"] as? Bool, isPassed == true {
-                    if assessment == "HALF_SQUAT" {
-                        vwrepsCounter.isHidden = false
-                        vwResponse.isHidden = true
-                        setRepsCounter()
-                    } else {
+//                    if assessment == "HALF_SQUAT" {
+//                        vwrepsCounter.isHidden = false
+//                        vwResponse.isHidden = true
+//                        setRepsCounter()
+//                    } else {
                         vwResponse.isHidden = false
                         vwrepsCounter.isHidden = true
-                    }
+//                    }
                     btnSkip.isHidden = true
                     isPreJoin = false
                     xtraVisionMgr.disconnectSession()
@@ -143,15 +143,15 @@ extension ExerciseVC : XtraVisionAIDelegate {
                 }
             } else {
 //                timeLeftLabel.text = "\(response["time_left"] as? Int ?? 999)"
-                if assessment == "HALF_SQUAT" {
-                    if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let total = reps["total"] as? Int {
-                        if lastRep != total {
-                            AudioManager.sharedInstance.resetFileName()
-                            AudioManager.sharedInstance.startMusic("sound_good_trigger", soundType: "wav")
-                        }
-                        repsCounterView.setReps(total)
-                    }
-                }
+//                if assessment == "HALF_SQUAT" {
+//                    if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let total = reps["total"] as? Int {
+//                        if lastRep != total {
+//                            AudioManager.sharedInstance.resetFileName()
+//                            AudioManager.sharedInstance.startMusic("sound_good_trigger", soundType: "wav")
+//                        }
+//                        repsCounterView.setReps(total)
+//                    }
+//                }
                 let msg = message + "\n\n" + lblResponse.text
                 lblResponse.text = msg
             }

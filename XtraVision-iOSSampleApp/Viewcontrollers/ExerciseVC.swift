@@ -25,6 +25,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     //MARK:- Variable declaration
     var assessment : String = ""
     private var xtraVisionMgr = XtraVisionAIManager.shared
+    private let authToken = "_AUTH_TOKEN_"
     private var isPreJoin = true
     private var fullMessage = ""
     private var repsCounterView : RepetitionCounter!
@@ -87,7 +88,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     
     func connectSession() {
         let assessmentConfig = XtraVisionAssessmentConfig(5, grace_time_threshold: 5)
-        let connectionData = XtraVisionConnectionData("AUTH_TOKEN", assessmentName: assessment, assessmentConfig: assessmentConfig)
+        let connectionData = XtraVisionConnectionData(authToken, assessmentName: assessment, assessmentConfig: assessmentConfig)
 
         let requestData = XtraVisionRequestData(isPreJoin)
         let skeletonConfig = XtraVisionSkeletonConfig(2.0, dotRadius: 4.0, lineColor: UIColor.red, dotColor: UIColor.blue)

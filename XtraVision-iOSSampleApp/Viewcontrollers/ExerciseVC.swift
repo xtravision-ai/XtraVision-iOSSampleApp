@@ -87,7 +87,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     
     func connectSession() {
         let assessmentConfig = XtraVisionAssessmentConfig(5, grace_time_threshold: 5)
-        let connectionData = XtraVisionConnectionData("auth_token", assessmentName: assessment, assessmentConfig: assessmentConfig)
+        let connectionData = XtraVisionConnectionData("AUTH_TOKEN", assessmentName: assessment, assessmentConfig: assessmentConfig)
 
         let requestData = XtraVisionRequestData(isPreJoin)
         let skeletonConfig = XtraVisionSkeletonConfig(2.0, dotRadius: 4.0, lineColor: UIColor.red, dotColor: UIColor.blue)

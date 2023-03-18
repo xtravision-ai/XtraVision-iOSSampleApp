@@ -377,6 +377,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgCameraYellow" translatesAutoresizingMaskIntoConstraints="NO" id="bwc-ov-Ad8">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
+                            </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="FA4-7S-iMF">
                                 <rect key="frame" x="112.66666666666669" y="664" width="150" height="44"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
@@ -459,19 +462,24 @@
                             <constraint firstItem="bsy-iI-hOJ" firstAttribute="bottom" secondItem="73K-YK-guw" secondAttribute="bottom" id="BKv-GE-aab"/>
                             <constraint firstItem="bsy-iI-hOJ" firstAttribute="leading" secondItem="vj7-DQ-fAe" secondAttribute="leading" id="Ezi-xg-gsc"/>
                             <constraint firstItem="vj7-DQ-fAe" firstAttribute="bottom" secondItem="FA4-7S-iMF" secondAttribute="bottom" constant="70" id="Fes-Sr-dYq"/>
+                            <constraint firstItem="bwc-ov-Ad8" firstAttribute="top" secondItem="73K-YK-guw" secondAttribute="top" id="Ge5-9Q-7kS"/>
                             <constraint firstItem="dHJ-sx-TYm" firstAttribute="top" secondItem="vj7-DQ-fAe" secondAttribute="top" constant="10" id="IZf-I2-NMt"/>
                             <constraint firstItem="vj7-DQ-fAe" firstAttribute="trailing" secondItem="bsy-iI-hOJ" secondAttribute="trailing" id="KRf-HA-7vE"/>
                             <constraint firstItem="dHJ-sx-TYm" firstAttribute="leading" secondItem="vj7-DQ-fAe" secondAttribute="leading" constant="10" id="On0-qf-hZ7"/>
                             <constraint firstItem="FA4-7S-iMF" firstAttribute="centerX" secondItem="73K-YK-guw" secondAttribute="centerX" id="TIM-R5-9mT"/>
                             <constraint firstItem="PC1-0W-F0h" firstAttribute="top" secondItem="73K-YK-guw" secondAttribute="top" id="X4M-4y-qw5"/>
                             <constraint firstAttribute="bottom" secondItem="PC1-0W-F0h" secondAttribute="bottom" id="Y0k-4E-V3W"/>
+                            <constraint firstItem="bwc-ov-Ad8" firstAttribute="bottom" secondItem="vj7-DQ-fAe" secondAttribute="bottom" id="jKq-pd-HiJ"/>
+                            <constraint firstItem="bwc-ov-Ad8" firstAttribute="leading" secondItem="vj7-DQ-fAe" secondAttribute="leading" id="jta-jc-EeO"/>
                             <constraint firstItem="PC1-0W-F0h" firstAttribute="leading" secondItem="73K-YK-guw" secondAttribute="leading" id="pvW-XK-68v"/>
                             <constraint firstItem="A2v-PR-ykq" firstAttribute="leading" secondItem="vj7-DQ-fAe" secondAttribute="leading" id="qJa-Bk-HmL"/>
+                            <constraint firstItem="bwc-ov-Ad8" firstAttribute="trailing" secondItem="vj7-DQ-fAe" secondAttribute="trailing" id="rh3-ca-fU4"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="btnSkip" destination="FA4-7S-iMF" id="anw-h2-fPF"/>
                         <outlet property="cameraView" destination="PC1-0W-F0h" id="yMq-yv-GmD"/>
+                        <outlet property="imgFrame" destination="bwc-ov-Ad8" id="hcu-Q7-3cJ"/>
                         <outlet property="lblResponse" destination="he7-Ho-bXw" id="Nyz-Xv-j0X"/>
                         <outlet property="vwResponse" destination="bsy-iI-hOJ" id="Rqf-R0-3m1"/>
                         <outlet property="vwrepsCounter" destination="A2v-PR-ykq" id="RC7-kA-xR2"/>
@@ -479,11 +487,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K2f-RY-Adv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2081.5384615384614" y="79.620853080568722"/>
+            <point key="canvasLocation" x="2080.8000000000002" y="79.064039408867004"/>
         </scene>
     </scenes>
     <resources>
         <image name="ic-close" width="20" height="20"/>
+        <image name="imgCameraYellow" width="393" height="633"/>
         <image name="xtra_header" width="137" height="56.333332061767578"/>
         <namedColor name="ThemeBlue">
             <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>

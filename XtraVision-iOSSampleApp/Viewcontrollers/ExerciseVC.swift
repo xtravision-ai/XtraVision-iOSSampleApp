@@ -40,6 +40,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     @IBOutlet weak var vwResponse: UIView!
     @IBOutlet weak var lblResponse: UITextView!
     @IBOutlet weak var vwrepsCounter: UIView!
+    @IBOutlet weak var imgFrame: UIImageView!
     
     //MARK: View Life cycle methods
     override func viewDidLoad() {
@@ -60,6 +61,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     
     //MARK: UIButton action methods
     @IBAction func btnClickOnSkip(_ sender: UIButton) {
+        imgFrame.isHidden = true
         xtraVisionMgr.disconnectSession()
         btnSkip.isHidden = true
         if assessment == "HALF_SQUAT" {
@@ -155,6 +157,11 @@ extension ExerciseVC : XtraVisionAIDelegate {
         if let response = message.toJSON() as? [String : Any] {
             if isPreJoin {
                 if let isPassed = response["isPassed"] as? Bool, isPassed == true {
+                    imgFrame.image = UIImage(named: "imgCameraBlue")
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                        self?.imgFrame.isHidden = true
+                    }
                     if assessment == "HALF_SQUAT" {
                         vwrepsCounter.isHidden = false
                         vwResponse.isHidden = true

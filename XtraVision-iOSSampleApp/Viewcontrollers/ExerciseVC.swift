@@ -199,7 +199,7 @@ extension ExerciseVC : XtraVisionAIDelegate {
                     }
                 } else if assessment == "CARDIO" {
                     if let data = response["data"] as? [String : Any], let power_list = data["power_list"] as? [Int], power_list.count > 0 {
-                        intensityMeterView.setIntensity(Float(power_list[0]))
+                        intensityMeterView.setIntensity(power_list[0])
                     }
                 }
                 let msg = message + "\n\n" + lblResponse.text

@@ -1,10 +1,3 @@
-//
-//  ExerciseVC.swift
-//  DemoApp
-//
-//  Created by XTRA on 25/10/22.
-//
-//
 //  ExerciseVC.swift
 //  DemoApp
 //
@@ -24,12 +17,14 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     
     //MARK:- Variable declaration
     var assessment : String = ""
+    var counterValue = 5
+    var countdownTimer : Timer?
+    private var intensityMeterView : IntensityMeterView!
     private var xtraVisionMgr = XtraVisionAIManager.shared
     private let authToken = "_AUTH_TOKEN_" //Add auth token you received
     private var isPreJoin = true
     private var fullMessage = ""
     private var repsCounterView : RepetitionCounter!
-    private var intensityMeterView : IntensityMeterView!
     private var timerView : TimeUnderLoadView!
     var lastRep = 0
     var reps_threshold = 10
@@ -41,6 +36,8 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     @IBOutlet weak var lblResponse: UITextView!
     @IBOutlet weak var vwrepsCounter: UIView!
     @IBOutlet weak var imgFrame: UIImageView!
+    @IBOutlet weak var lblPowerValue: UILabel!
+    @IBOutlet weak var lblCounter: UILabel!
     
     //MARK: View Life cycle methods
     override func viewDidLoad() {
@@ -53,35 +50,22 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         super.viewDidAppear(animated)
         connectSession()
     }
-
+    
     override func viewDidDisappear(_ animated: Bool) {
-      super.viewDidDisappear(animated)
-      stopSession()
+        super.viewDidDisappear(animated)
+        stopSession()
     }
     
     //MARK: UIButton action methods
     @IBAction func btnClickOnSkip(_ sender: UIButton) {
+        xtraVisionMgr.disconnectSession(false)
+        btnSkip.isUserInteractionEnabled = false
         imgFrame.isHidden = true
-        xtraVisionMgr.disconnectSession()
         btnSkip.isHidden = true
-        if assessment == "HALF_SQUAT" {
-            vwrepsCounter.isHidden = false
-            vwResponse.isHidden = true
-            setRepsCounter()
-        } else if assessment == "GLUTE_BRIDGE" {
-            vwrepsCounter.isHidden = false
-            vwResponse.isHidden = true
-            setTimeUnderLoadView()
-        } else if assessment == "CARDIO" {
-            vwrepsCounter.isHidden = false
-            vwResponse.isHidden = true
-            setIntensityMeter()
-        } else {
-            vwResponse.isHidden = false
-            vwrepsCounter.isHidden = true
+        startCountDown()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            self?.onPreJoinCompleted()
         }
-        isPreJoin = false
-        connectSession()
     }
     
     @IBAction func btnClickOnCancel(_ sender: UIButton) {
@@ -93,16 +77,14 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     func initialiseController() {
         UIApplication.shared.isIdleTimerDisabled = true
         vwResponse.isHidden = true
-        if assessment == "HALF_SQUAT" || assessment == "GLUTE_BRIDGE" || assessment == "CARDIO" {
-            vwrepsCounter.isHidden = true
-        }
+        vwrepsCounter.isHidden = true
         xtraVisionMgr.delegate = self
     }
     
     func connectSession() {
-        let assessmentConfig = XtraVisionAssessmentConfig(5, grace_time_threshold: 5)
+        let assessmentConfig = XtraVisionAssessmentConfig(5, grace_time_threshold: 5, sets_threshold : -1)
         let connectionData = XtraVisionConnectionData(authToken, assessmentName: assessment, assessmentConfig: assessmentConfig)
-
+        
         let requestData = XtraVisionRequestData(isPreJoin)
         let skeletonConfig = XtraVisionSkeletonConfig(2.0, dotRadius: 4.0, lineColor: UIColor.red, dotColor: UIColor.blue)
         let libData = XtraVisionLibData(isSkeletonEnable, cameraView: cameraView, skeletonConfig: skeletonConfig)
@@ -110,7 +92,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     }
     
     func stopSession() {
-        xtraVisionMgr.disconnectSession()
+        xtraVisionMgr.disconnectSession(true)
         UIApplication.shared.isIdleTimerDisabled = false
     }
     
@@ -133,8 +115,47 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         timerView = TimeUnderLoadView(frame : CGRect(x: 20, y: 0, width: self.view.frame.width - 40, height: 200))
         timerView.totleSeconds = reps_threshold
         timerView.progressTextColor = UIColor.black
-//        timerView.gradientColors =
+        //        timerView.gradientColors =
         self.vwrepsCounter.addSubview(timerView)
+    }
+    
+    func onPreJoinCompleted() {
+        btnSkip.isUserInteractionEnabled = false
+        imgFrame.isHidden = true
+        btnSkip.isHidden = true
+        isPreJoin = false
+        connectSession()
+        
+        if assessment == "HALF_SQUAT" || assessment == "BANDED_ALTERNATING_DIAGNOLS" || assessment == "PUSH_UPS" || assessment == "SIT_UPS_T2" {
+            vwrepsCounter.isHidden = false
+            vwResponse.isHidden = true
+            setRepsCounter()
+        } else if assessment == "SIT_WALL" {
+            vwrepsCounter.isHidden = false
+            vwResponse.isHidden = true
+            setTimeUnderLoadView()
+        } else if assessment == "SIT_AND_REACH_T2" || assessment == "CARDIO" {
+            vwrepsCounter.isHidden = false
+            vwResponse.isHidden = true
+            setIntensityMeter()
+        } else {
+            vwResponse.isHidden = false
+            vwrepsCounter.isHidden = true
+        }
+    }
+    
+    func startCountDown() {
+        lblCounter.isHidden = false
+        countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.changeTextForCountdown), userInfo: nil, repeats: true)
+    }
+    
+    @objc func changeTextForCountdown() {
+        counterValue -= 1
+        lblCounter.text = "\(counterValue)"
+        if counterValue == 0 {
+            countdownTimer?.invalidate()
+            lblCounter.isHidden = true
+        }
     }
 }
 
@@ -158,54 +179,66 @@ extension ExerciseVC : XtraVisionAIDelegate {
             if isPreJoin {
                 if let isPassed = response["isPassed"] as? Bool, isPassed == true {
                     imgFrame.image = UIImage(named: "imgCameraBlue")
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                    self.xtraVisionMgr.disconnectSession(false)
+                    startCountDown()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
                         self?.imgFrame.isHidden = true
+                        self?.onPreJoinCompleted()
                     }
-                    if assessment == "HALF_SQUAT" {
-                        vwrepsCounter.isHidden = false
-                        vwResponse.isHidden = true
-                        setRepsCounter()
-                    } else if assessment == "CARDIO" {
-                        vwrepsCounter.isHidden = false
-                        vwResponse.isHidden = true
-                        setIntensityMeter()
-                    } else if assessment == "GLUTE_BRIDGE" {
-                        vwrepsCounter.isHidden = false
-                        vwResponse.isHidden = true
-                        setTimeUnderLoadView()
-                    } else {
-                        vwResponse.isHidden = false
-                        vwrepsCounter.isHidden = true
-                    }
-                    btnSkip.isHidden = true
-                    isPreJoin = false
-                    xtraVisionMgr.disconnectSession()
-                    connectSession()
                 }
             } else {
-//                timeLeftLabel.text = "\(response["time_left"] as? Int ?? 999)"
-                if assessment == "HALF_SQUAT" {
+                switch assessment {
+                case "HALF_SQUAT", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "SIT_UPS_T2" :
                     if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let total = reps["total"] as? Int {
-                        if lastRep != total {
+
+                        var repetitions = 0
+                        if (total > 0 && total != lastRep) {
+                            if total >= 10 {
+                                repetitions = 10
+                            } else {
+                                repetitions = total
+                            }
                             AudioManager.sharedInstance.resetFileName()
-                            AudioManager.sharedInstance.startMusic("sound_good_trigger", soundType: "wav")
+                            AudioManager.sharedInstance.startMusic("sound_good_trigger", soundType: ".wav")
+                            lastRep = repetitions
+                            repsCounterView.setReps(repetitions)
                         }
-                        repsCounterView.setReps(total)
                     }
-                } else if assessment == "GLUTE_BRIDGE" {
+                case "SIT_WALL":
                     if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let seconds = additional_response["seconds"] as? Int {
-                        timerView.setTimeUnderLoad(reps_threshold - seconds)
+                        if reps_threshold - seconds > 0 {
+                            timerView.setTimeUnderLoad(reps_threshold - seconds)
+                        }
                     }
-                } else if assessment == "CARDIO" {
+                case "SIT_AND_REACH_T2":
+                    if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let max_score = reps["max_score"] as? Int {
+                        lblPowerValue.text = "Value: \(max_score)"
+                        intensityMeterView.setIntensity(Float(max_score))
+                    }
+                case "CARDIO":
                     if let data = response["data"] as? [String : Any], let power_list = data["power_list"] as? [Int], power_list.count > 0 {
+                        lblPowerValue.text = "Value: \(power_list[0])"
                         intensityMeterView.setIntensity(Float(power_list[0]))
                     }
+                default:
+                    break
                 }
                 let msg = message + "\n\n" + lblResponse.text
                 lblResponse.text = msg
             }
-//
+        } else {
+            switch assessment {
+            case "HALF_SQUAT", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "SIT_UPS_T2", "SIT_WALL" :
+                break
+            case "SIT_AND_REACH_T2", "CARDIO":
+                break
+//                if !isPreJoin {
+//                    lblPowerValue.text = "Value: \(0)"
+//                    intensityMeterView.setIntensity(Float(0))
+//                }
+            default:
+                break
+            }
         }
     }
 }

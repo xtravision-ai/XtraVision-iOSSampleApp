@@ -9,14 +9,20 @@ import UIKit
 
 var isSkeletonEnable = true
 
+struct Assessment {
+    var title : String
+    var code : String
+}
+
 class MainViewController: UIViewController {
 
     //MARK: Outlets
     @IBOutlet weak var btnSkeleton: UISwitch!
     @IBOutlet private weak var tblAssessmentList: UITableView!
     
+//    SIT_UPS_T2
     //MARK: Private variables
-    private var assessmentArray = ["GLUTE_BRIDGE", "QUADS_STRETCH", "OVERHEAD_STRETCH", "SINGLE_LEG_KNEE_HUGS", "DOUBLE_LEG_KNEE_HUGS", "THORACIC_ROTATION", "PECTORAL_STRETCH", "BOW_AND_ARROW", "ROTATION_STRETCH", "HIP_FLEXOR_QUAD_STRETCH", "BANDED_ALTERNATING_DIAGNOLS", "SHOULDER_SCAPTION", "HALF_SQUAT", "KNEE_ROCKING", "NECK_FLEXORS", "BANDED_BOW_AND_ARROW", "BANDED_EXTERNAL_ROTATION", "BANDED_T", "BANDED_W", "BANDED_PASS_THROUGH", "SHOULDER_BLADE_SQUEEZE", "CARDIO", "ROTATION_LOOKOVER", "CERVICAL_ISOMETRIC_EXTENSION", "LEVATOR_SCAPULAE_STRETCH", "RESISTED_BACK_EXTENSION", "UPPER_BACK_PULL"]
+    private var assessmentArray = [Assessment(title: "Half Squat", code: "HALF_SQUAT"), Assessment(title: "Banded Diagonal", code: "BANDED_ALTERNATING_DIAGNOLS"), Assessment(title: "Sit Wall", code: "SIT_WALL"), Assessment(title: "Push Ups", code: "PUSH_UPS"), Assessment(title: "V Sit and Reach", code: "SIT_AND_REACH_T2"), Assessment(title: "Sit Ups", code: "SIT_UPS_T2"), Assessment(title: "Cardio", code: "CARDIO")]
     
     //MARK: View Life cycle methods
     override func viewDidLoad() {
@@ -44,7 +50,7 @@ extension MainViewController : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AssessmentListCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = assessmentArray[indexPath.row]
+        content.text = assessmentArray[indexPath.row].title
         cell.contentConfiguration = content
         return cell
     }
@@ -53,7 +59,7 @@ extension MainViewController : UITableViewDataSource, UITableViewDelegate {
 //        let controller = ExerciseViewController.instance
         let controller = ExerciseVC.instance
         controller.modalPresentationStyle = .fullScreen
-        controller.assessment = assessmentArray[indexPath.row]
+        controller.assessment = assessmentArray[indexPath.row].code
         self.present(controller, animated: true, completion: nil)
     }
 }

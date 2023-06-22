@@ -38,6 +38,9 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     @IBOutlet weak var imgFrame: UIImageView!
     @IBOutlet weak var lblPowerValue: UILabel!
     @IBOutlet weak var lblCounter: UILabel!
+    @IBOutlet weak var vwShoulderAbduction: UIView!
+    @IBOutlet weak var lblLeftValue: UILabel!
+    @IBOutlet weak var lblRightValue: UILabel!
     
     //MARK: View Life cycle methods
     override func viewDidLoad() {
@@ -78,6 +81,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         UIApplication.shared.isIdleTimerDisabled = true
         vwResponse.isHidden = true
         vwrepsCounter.isHidden = true
+        vwShoulderAbduction.isHidden = true
         xtraVisionMgr.delegate = self
     }
     
@@ -126,21 +130,32 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         isPreJoin = false
         connectSession()
         
-        if assessment == "HALF_SQUAT" || assessment == "BANDED_ALTERNATING_DIAGNOLS" || assessment == "PUSH_UPS" || assessment == "SIT_UPS_T2" {
+        if assessment == "SQUATS_T2" || assessment == "BANDED_ALTERNATING_DIAGNOLS" || assessment == "PUSH_UPS" || assessment == "GLUTE_BRIDGE" {
             vwrepsCounter.isHidden = false
             vwResponse.isHidden = true
+            vwShoulderAbduction.isHidden = true
             setRepsCounter()
-        } else if assessment == "SIT_WALL" {
+            if assessment == "GLUTE_BRIDGE" {
+                TextToSpeechManager.sharedInstance.startSpeaking("Hold the bridge pose atleast for 10 seconds")
+            }
+        } else if assessment == "PLANK" {
             vwrepsCounter.isHidden = false
             vwResponse.isHidden = true
+            vwShoulderAbduction.isHidden = true
             setTimeUnderLoadView()
-        } else if assessment == "SIT_AND_REACH_T2" || assessment == "CARDIO" {
+        } else if assessment == "CARDIO" {
             vwrepsCounter.isHidden = false
             vwResponse.isHidden = true
+            vwShoulderAbduction.isHidden = true
             setIntensityMeter()
+        } else if assessment == "RANGE_OF_MOTION" {
+            vwrepsCounter.isHidden = true
+            vwResponse.isHidden = true
+            vwShoulderAbduction.isHidden = false
         } else {
             vwResponse.isHidden = false
             vwrepsCounter.isHidden = true
+            vwShoulderAbduction.isHidden = true
         }
     }
     
@@ -188,7 +203,7 @@ extension ExerciseVC : XtraVisionAIDelegate {
                 }
             } else {
                 switch assessment {
-                case "HALF_SQUAT", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "SIT_UPS_T2" :
+                case "SQUATS_T2", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "GLUTE_BRIDGE" :
                     if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let total = reps["total"] as? Int {
 
                         var repetitions = 0
@@ -204,16 +219,30 @@ extension ExerciseVC : XtraVisionAIDelegate {
                             repsCounterView.setReps(repetitions)
                         }
                     }
-                case "SIT_WALL":
+                case "PLANK":
                     if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let seconds = additional_response["seconds"] as? Int {
-                        if reps_threshold - seconds > 0 {
+                        if reps_threshold - seconds >= 0 {
                             timerView.setTimeUnderLoad(reps_threshold - seconds)
+                            if reps_threshold - seconds == 0 {
+                                stopSession()
+                                self.dismiss(animated: true)
+                            }
                         }
                     }
-                case "SIT_AND_REACH_T2":
-                    if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let max_score = reps["max_score"] as? Int {
-                        lblPowerValue.text = "Value: \(max_score)"
-                        intensityMeterView.setIntensity(Float(max_score))
+                case "RANGE_OF_MOTION":
+                    if let data = response["data"] as? [String : Any], let angles = data["angles"] as? [String : Any] {
+                        
+                        if let shoulder_left = angles["shoulder_right"] as? Int {
+                            lblLeftValue.text = "\(shoulder_left > 0 ? shoulder_left : 0)°"
+                        } else {
+                            lblLeftValue.text = "0°"
+                        }
+                        
+                        if let shoulder_right = angles["shoulder_left"] as? Int {
+                            lblRightValue.text = "\(shoulder_right > 0 ? shoulder_right : 0)°"
+                        } else {
+                            lblRightValue.text = "0°"
+                        }
                     }
                 case "CARDIO":
                     if let data = response["data"] as? [String : Any], let power_list = data["power_list"] as? [Int], power_list.count > 0 {
@@ -225,19 +254,6 @@ extension ExerciseVC : XtraVisionAIDelegate {
                 }
                 let msg = message + "\n\n" + lblResponse.text
                 lblResponse.text = msg
-            }
-        } else {
-            switch assessment {
-            case "HALF_SQUAT", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "SIT_UPS_T2", "SIT_WALL" :
-                break
-            case "SIT_AND_REACH_T2", "CARDIO":
-                break
-//                if !isPreJoin {
-//                    lblPowerValue.text = "Value: \(0)"
-//                    intensityMeterView.setIntensity(Float(0))
-//                }
-            default:
-                break
             }
         }
     }

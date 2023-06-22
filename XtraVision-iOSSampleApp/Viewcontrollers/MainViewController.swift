@@ -22,7 +22,7 @@ class MainViewController: UIViewController {
     
 //    SIT_UPS_T2
     //MARK: Private variables
-    private var assessmentArray = [Assessment(title: "Half Squat", code: "HALF_SQUAT"), Assessment(title: "Banded Diagonal", code: "BANDED_ALTERNATING_DIAGNOLS"), Assessment(title: "Sit Wall", code: "SIT_WALL"), Assessment(title: "Push Ups", code: "PUSH_UPS"), Assessment(title: "V Sit and Reach", code: "SIT_AND_REACH_T2"), Assessment(title: "Sit Ups", code: "SIT_UPS_T2"), Assessment(title: "Cardio", code: "CARDIO")]
+    private var assessmentArray = [Assessment(title: "Squats", code: "SQUATS_T2"), Assessment(title: "Banded Diagonal", code: "BANDED_ALTERNATING_DIAGNOLS"), Assessment(title: "Plank", code: "PLANK"), Assessment(title: "Push Ups", code: "PUSH_UPS"), Assessment(title: "Glute Bridge", code: "GLUTE_BRIDGE"), Assessment(title: "Cardio", code: "CARDIO"), Assessment(title: "Shoulder Abduction", code: "RANGE_OF_MOTION")]
     
     //MARK: View Life cycle methods
     override func viewDidLoad() {

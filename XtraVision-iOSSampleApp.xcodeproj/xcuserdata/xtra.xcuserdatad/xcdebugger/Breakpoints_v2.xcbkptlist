@@ -14,10 +14,87 @@
             filePath = "XtraVision-iOSSampleApp/Viewcontrollers/ExerciseVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
             landmarkName = "onMessageReceived(_:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "ED01BE73-3D13-4092-B0F0-5AF9A1116B98 - 8634073f385279a1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XtraVision_iOSSampleApp.ExerciseVC.onMessageReceived(Swift.String) -&gt; ()"
+                  moduleName = "XtraVision-iOSSampleApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xtra/Desktop/Projects/XtraVision-iOSSampleApp/XtraVision-iOSSampleApp/Viewcontrollers/ExerciseVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "4668">
+               </Location>
+               <Location
+                  uuid = "ED01BE73-3D13-4092-B0F0-5AF9A1116B98 - 8634073f385279a1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XtraVision_iOSSampleApp.ExerciseVC.onMessageReceived(Swift.String) -&gt; ()"
+                  moduleName = "XtraVision-iOSSampleApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xtra/Desktop/Projects/XtraVision-iOSSampleApp/XtraVision-iOSSampleApp/Viewcontrollers/ExerciseVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "4872">
+               </Location>
+               <Location
+                  uuid = "ED01BE73-3D13-4092-B0F0-5AF9A1116B98 - 8634073f385279a1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XtraVision_iOSSampleApp.ExerciseVC.onMessageReceived(Swift.String) -&gt; ()"
+                  moduleName = "XtraVision-iOSSampleApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xtra/Desktop/Projects/XtraVision-iOSSampleApp/XtraVision-iOSSampleApp/Viewcontrollers/ExerciseVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "5116">
+               </Location>
+               <Location
+                  uuid = "ED01BE73-3D13-4092-B0F0-5AF9A1116B98 - 8634073f385279a1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XtraVision_iOSSampleApp.ExerciseVC.onMessageReceived(Swift.String) -&gt; ()"
+                  moduleName = "XtraVision-iOSSampleApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xtra/Desktop/Projects/XtraVision-iOSSampleApp/XtraVision-iOSSampleApp/Viewcontrollers/ExerciseVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "5372">
+               </Location>
+               <Location
+                  uuid = "ED01BE73-3D13-4092-B0F0-5AF9A1116B98 - 8634073f385279a1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XtraVision_iOSSampleApp.ExerciseVC.onMessageReceived(Swift.String) -&gt; ()"
+                  moduleName = "XtraVision-iOSSampleApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xtra/Desktop/Projects/XtraVision-iOSSampleApp/XtraVision-iOSSampleApp/Viewcontrollers/ExerciseVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "5408">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

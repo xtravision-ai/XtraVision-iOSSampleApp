@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		31512AC22A31A20200C63F28 /* XtraVisionAI in Frameworks */ = {isa = PBXBuildFile; productRef = 31512AC12A31A20200C63F28 /* XtraVisionAI */; };
 		3168512D2A38429500305E45 /* TextToSpeechMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3168512C2A38429500305E45 /* TextToSpeechMgr.swift */; };
 		3168512F2A38458600305E45 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3168512E2A38458600305E45 /* UIViewExt.swift */; };
+		318FBD482A5D2483000D3D3C /* XtraVisionAI in Frameworks */ = {isa = PBXBuildFile; productRef = 318FBD472A5D2483000D3D3C /* XtraVisionAI */; };
 		319A07BC29A5EDE700E5BA73 /* XTRAAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319A07BB29A5EDE700E5BA73 /* XTRAAudioPlayer.swift */; };
 		319A07D129A634C800E5BA73 /* sound_good_trigger.wav in Resources */ = {isa = PBXBuildFile; fileRef = 319A07D029A634C800E5BA73 /* sound_good_trigger.wav */; };
 		31ADDF06290BA88800E9F7F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADDF05290BA88800E9F7F8 /* AppDelegate.swift */; };
@@ -48,7 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31512AC22A31A20200C63F28 /* XtraVisionAI in Frameworks */,
+				318FBD482A5D2483000D3D3C /* XtraVisionAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,7 +142,7 @@
 			);
 			name = "XtraVision-iOSSampleApp";
 			packageProductDependencies = (
-				31512AC12A31A20200C63F28 /* XtraVisionAI */,
+				318FBD472A5D2483000D3D3C /* XtraVisionAI */,
 			);
 			productName = "XtraVision-iOSSampleApp";
 			productReference = 31ADDF02290BA88800E9F7F8 /* XtraVision-iOSSampleApp.app */;
@@ -173,7 +173,7 @@
 			);
 			mainGroup = 31ADDEF9290BA88800E9F7F8;
 			packageReferences = (
-				31512AC02A31A20200C63F28 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */,
+				318FBD462A5D2483000D3D3C /* XCRemoteSwiftPackageReference "xtravision-swift-package" */,
 			);
 			productRefGroup = 31ADDF03290BA88800E9F7F8 /* Products */;
 			projectDirPath = "";
@@ -358,7 +358,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_TEAM = S3V97MLHVW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XtraVision-iOSSampleApp/Info.plist";
@@ -369,7 +369,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -390,7 +390,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_TEAM = S3V97MLHVW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XtraVision-iOSSampleApp/Info.plist";
@@ -401,7 +401,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -440,7 +440,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		31512AC02A31A20200C63F28 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */ = {
+		318FBD462A5D2483000D3D3C /* XCRemoteSwiftPackageReference "xtravision-swift-package" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/xtravision-ai/xtravision-swift-package.git";
 			requirement = {
@@ -451,9 +451,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		31512AC12A31A20200C63F28 /* XtraVisionAI */ = {
+		318FBD472A5D2483000D3D3C /* XtraVisionAI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31512AC02A31A20200C63F28 /* XCRemoteSwiftPackageReference "xtravision-swift-package" */;
+			package = 318FBD462A5D2483000D3D3C /* XCRemoteSwiftPackageReference "xtravision-swift-package" */;
 			productName = XtraVisionAI;
 		};
 /* End XCSwiftPackageProductDependency section */

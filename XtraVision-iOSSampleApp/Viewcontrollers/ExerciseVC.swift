@@ -21,7 +21,8 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     var countdownTimer : Timer?
     private var intensityMeterView : IntensityMeterView!
     private var xtraVisionMgr = XtraVisionAIManager.shared
-    private let authToken = "_AUTH_TOKEN_" //Add auth token you received
+    private let authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU1NTVkNS0wNmFhLTExZWQtOGJkYy0xMmZhYjRmZmFiZWQiLCJhcHBJZCI6IjY5YTdmMmU2LTA2YWEtMTFlZC04YmRjLTEyZmFiNGZmYWJlZCIsIm9yZ0lkIjoiNmQ5MWZlN2YtMDZhOS0xMWVkLThiZGMtMTJmYWI0ZmZhYmVkIiwiaWF0IjoxNjYwMTA3MjI0LCJleHAiOjE2OTE2NjQ4MjR9._i4MJbwPznHzxoStcRAcK7N7k_xGdUjvKwmHXv1zixM"
+//    "_AUTH_TOKEN_" //Add auth token you received
     private var isPreJoin = true
     private var fullMessage = ""
     private var repsCounterView : RepetitionCounter!
@@ -59,6 +60,28 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         stopSession()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if repsCounterView != nil {
+            self.repsCounterView.layoutSubviews()
+            self.repsCounterView.layoutIfNeeded()
+        }
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+        } else {
+            print("Portrait")
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if repsCounterView != nil {
+            repsCounterView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: 200)
+            self.repsCounterView.layoutSubviews()
+            self.repsCounterView.layoutIfNeeded()
+        }
+    }
+    
     //MARK: UIButton action methods
     @IBAction func btnClickOnSkip(_ sender: UIButton) {
         xtraVisionMgr.disconnectSession(false)
@@ -90,7 +113,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         let connectionData = XtraVisionConnectionData(authToken, assessmentName: assessment, assessmentConfig: assessmentConfig)
         
         let requestData = XtraVisionRequestData(isPreJoin)
-        let skeletonConfig = XtraVisionSkeletonConfig(2.0, dotRadius: 4.0, lineColor: UIColor.red, dotColor: UIColor.blue)
+        let skeletonConfig = XtraVisionSkeletonConfig(5.0, dotRadius: 5.0, lineColor: UIColor.red, dotColor: UIColor.blue)
         let libData = XtraVisionLibData(isSkeletonEnable, cameraView: cameraView, skeletonConfig: skeletonConfig)
         xtraVisionMgr.configureData(connectionData, requestData: requestData, libData: libData)
     }
@@ -130,7 +153,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
         isPreJoin = false
         connectSession()
         
-        if assessment == "SQUATS_T2" || assessment == "BANDED_ALTERNATING_DIAGNOLS" || assessment == "PUSH_UPS" || assessment == "GLUTE_BRIDGE" {
+        if assessment == "SQUATS" || assessment == "BANDED_ALTERNATING_DIAGNOLS" || assessment == "PUSH_UPS" || assessment == "GLUTE_BRIDGE" {
             vwrepsCounter.isHidden = false
             vwResponse.isHidden = true
             vwShoulderAbduction.isHidden = true
@@ -203,7 +226,7 @@ extension ExerciseVC : XtraVisionAIDelegate {
                 }
             } else {
                 switch assessment {
-                case "SQUATS_T2", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "GLUTE_BRIDGE" :
+                case "SQUATS", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "GLUTE_BRIDGE" :
                     if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let total = reps["total"] as? Int {
 
                         var repetitions = 0

@@ -21,7 +21,7 @@ class ExerciseVC : UIViewController, ReusableProtocol {
     var countdownTimer : Timer?
     private var intensityMeterView : IntensityMeterView!
     private var xtraVisionMgr = XtraVisionAIManager.shared
-    private let authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU1NTVkNS0wNmFhLTExZWQtOGJkYy0xMmZhYjRmZmFiZWQiLCJhcHBJZCI6IjY5YTdmMmU2LTA2YWEtMTFlZC04YmRjLTEyZmFiNGZmYWJlZCIsIm9yZ0lkIjoiNmQ5MWZlN2YtMDZhOS0xMWVkLThiZGMtMTJmYWI0ZmZhYmVkIiwiaWF0IjoxNjYwMTA3MjI0LCJleHAiOjE2OTE2NjQ4MjR9._i4MJbwPznHzxoStcRAcK7N7k_xGdUjvKwmHXv1zixM"
+    private let authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiYzJlYTBlYS0yN2M3LTRhYjEtOTlhZi1hZTRjYzVhZmU4YjIiLCJhcHBJZCI6IjhkZWExNGJiLTRlYjMtMTFlZC04MjNiLTEyZmFiNGZmYWJlZCIsIm9yZ0lkIjoiODk5Y2I5NjAtNGViMy0xMWVkLTgyM2ItMTJmYWI0ZmZhYmVkIiwiaWF0IjoxNjg2NTgwNTkyLCJleHAiOjE3MTgxMzgxOTJ9.Rd5ss9zVKd-V-KW1qpjKK7Wg517h8hF7t4APPhN3NmI"
 //    "_AUTH_TOKEN_" //Add auth token you received
     private var isPreJoin = true
     private var fullMessage = ""
@@ -214,6 +214,12 @@ extension ExerciseVC : XtraVisionAIDelegate {
     func onMessageReceived(_ message: String) {
         print("message: \(message)")
         if let response = message.toJSON() as? [String : Any] {
+            if let data = response["data"] as? [String : Any], let out_of_screen_feedback = data["out_of_screen_feedback"] as? [String : Any] {
+                if let value = out_of_screen_feedback["value"] as? String {
+                    self.view.makeToast(value)
+                }
+            }
+            
             if isPreJoin {
                 if let isPassed = response["isPassed"] as? Bool, isPassed == true {
                     imgFrame.image = UIImage(named: "imgCameraBlue")
@@ -225,6 +231,10 @@ extension ExerciseVC : XtraVisionAIDelegate {
                     }
                 }
             } else {
+//            out_of_screen_feedback: {
+//                    value: String, //Descriptive message
+//                    code: String // Predefined Code
+//                }
                 switch assessment {
                 case "SQUATS", "BANDED_ALTERNATING_DIAGNOLS", "PUSH_UPS", "GLUTE_BRIDGE" :
                     if let data = response["data"] as? [String : Any], let additional_response = data["additional_response"] as? [String : Any], let reps = additional_response["reps"] as? [String : Any], let total = reps["total"] as? Int {
@@ -255,13 +265,13 @@ extension ExerciseVC : XtraVisionAIDelegate {
                 case "RANGE_OF_MOTION":
                     if let data = response["data"] as? [String : Any], let angles = data["angles"] as? [String : Any] {
                         
-                        if let shoulder_left = angles["shoulder_right"] as? Int {
+                        if let shoulder_left = angles["shoulder_left"] as? Int {
                             lblLeftValue.text = "\(shoulder_left > 0 ? shoulder_left : 0)°"
                         } else {
                             lblLeftValue.text = "0°"
                         }
                         
-                        if let shoulder_right = angles["shoulder_left"] as? Int {
+                        if let shoulder_right = angles["shoulder_right"] as? Int {
                             lblRightValue.text = "\(shoulder_right > 0 ? shoulder_right : 0)°"
                         } else {
                             lblRightValue.text = "0°"
